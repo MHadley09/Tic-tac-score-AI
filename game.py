@@ -6,7 +6,7 @@ class Game:
     def __init__(self, board = []):        
         self.currentPlayer = 1
         self.grid_shape = (5,5)
-        self.input_shape = (3,5,5)
+        self.input_shape = (2,5,5)
         self.b = np.array([0 for i in range(25)], dtype=np.int)
         self.gameState = GameState(self.b, 1)
         self.actionSpace = np.array([0 for i in range(25)], dtype=np.int)
