@@ -95,7 +95,8 @@ class GameState():
         # if there is only 1 move left calculate who wins
         if len(self.allowedActions) == 1:
             scores = _getScore(self)
-            return 1 if score[0]-scores[1] > 0 else -1
+            p1winning = 1 if score[0]-scores[1] > 0 else -1
+            return p1winning*self.playerTurn
         return 0
 
     def _getScore(self):
@@ -107,10 +108,10 @@ class GameState():
                 calcBoard = self.board.reshape(self.grid_shape[0], self.grid_shape[1])
                 matchSymbol = calcBoard[h, w]
                 if matchSymbol == 1:
-                    scores = scoresFromSpot(calcBoard, 1, h, w)
+                    scores = rewardFromSpot(calcBoard, 1, h, w)
                     p1score += scores
                 elif matchSymbol == 2:
-                    scores = scoresFromSpot(calcBoard, 2, h, w)
+                    scores = rewardFromSpot(calcBoard, 2, h, w)
                     p2score += scores
         return (p1score, p2score)
 
