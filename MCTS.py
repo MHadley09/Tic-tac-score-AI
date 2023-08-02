@@ -62,7 +62,7 @@ class MCTS():
 #             lg.logger_mcts.info('PLAYER TURN...%d', currentNode.state.playerTurn)
         
             maxQU = -99999
-
+            simulationAction = None
             if currentNode == self.root and config.DIRICHLET:
                 epsilon = config.EPSILON
                 nu = np.random.dirichlet([config.ALPHA] * len(currentNode.edges))
@@ -92,10 +92,10 @@ class MCTS():
                     simulationEdge = edge
 
 #             lg.logger_mcts.info('action with highest Q + U...%d', simulationAction)
-
-            newState, value, done = currentNode.state.takeAction(simulationAction) #the value of the newState from the POV of the new playerTurn
-            currentNode = simulationEdge.outNode
-            breadcrumbs.append(simulationEdge)
+            if simulationAction != None:
+                newState, value, done = currentNode.state.takeAction(simulationAction) #the value of the newState from the POV of the new playerTurn
+                currentNode = simulationEdge.outNode
+                breadcrumbs.append(simulationEdge)
 
 #         lg.logger_mcts.info('DONE...%d', done)
 

@@ -12,6 +12,7 @@ import loggers as lg
 import time
 
 import matplotlib.pyplot as plt
+import tensorflow as tf
 from IPython import display
 import pylab as pl
 
@@ -132,7 +133,6 @@ class Agent():
     def get_preds(self, state):
         #predict the leaf
         inputToModel = np.array([self.model.convertToModelInput(state)])
-
         preds = self.model.predict(inputToModel)
         value_array = preds[0]
         logits_array = preds[1]

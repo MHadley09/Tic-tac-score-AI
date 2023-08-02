@@ -108,14 +108,14 @@ class GameState():
                 calcBoard = self.board.reshape(self.grid_shape[0], self.grid_shape[1])
                 matchSymbol = calcBoard[h, w]
                 if matchSymbol == 1:
-                    scores = rewardFromSpot(calcBoard, 1, h, w)
+                    scores = self.rewardFromSpot(calcBoard, 1, h, w)
                     p1score += scores
                 elif matchSymbol == 2:
-                    scores = rewardFromSpot(calcBoard, 2, h, w)
+                    scores = self.rewardFromSpot(calcBoard, 2, h, w)
                     p2score += scores
         return (p1score, p2score)
 
-    def rewardFromSpot(calcBoard, matchSymbol, h, w):
+    def rewardFromSpot(self, calcBoard, matchSymbol, h, w):
         scores = 0
         
         #vertical check
@@ -125,7 +125,7 @@ class GameState():
         if w < self.grid_shape[1]-2:
             scores += 1 if calcBoard[h, w+1] == matchSymbol and calcBoard[h,w+2] == matchSymbol else 0
         #diagonal down right
-        if w < self.grid_shape[1]-2 and h < state.shape[0]-2:
+        if w < self.grid_shape[1]-2 and h < self.grid_shape[0]-2:
             scores += 1 if calcBoard[h+1, w+1] == matchSymbol and calcBoard[h+2,w+2] == matchSymbol else 0
         if w > 2 and h < self.grid_shape[0]-2:
             scores += 1 if calcBoard[h+1, w-1] == matchSymbol and calcBoard[h+2,w-2] == matchSymbol else 0
