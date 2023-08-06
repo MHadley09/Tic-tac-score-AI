@@ -78,25 +78,20 @@ while 1:
     _, memory, _, _ = playMatches(best_player, best_player, config.EPISODES, turns_until_tau0 = config.TURNS_UNTIL_TAU0, memory = memory)
     print('\n')
     
-    if len(memory.ltmemory) >= config.MEMORY_SIZE:
+    ######## RETRAINING ########
+    print('RETRAINING...')
+    current_player.replay(memory.ltmemory)
+    print('')
 
-        ######## RETRAINING ########
-        print('RETRAINING...')
-        current_player.replay(memory.ltmemory)
-        print('')
+    if iteration % 5 == 0:
+        pickle.dump( memory, open( run_folder + "memory/memory" + str(iteration).zfill(4) + ".p", "wb" ) )
+    
+    memory_samp = random.sample(memory.ltmemory, min(1000, len(memory.ltmemory)))
+    
+    for s in memory_samp:
+        current_value, current_probs, _ = current_player.get_preds(s['state'])
+        best_value, best_probs, _ = best_player.get_preds(s['state'])
 
-        if iteration % 5 == 0:
-            pickle.dump( memory, open( run_folder + "memory/memory" + str(iteration).zfill(4) + ".p", "wb" ) )
-        
-        memory_samp = random.sample(memory.ltmemory, min(1000, len(memory.ltmemory)))
-        
-        for s in memory_samp:
-            current_value, current_probs, _ = current_player.get_preds(s['state'])
-            best_value, best_probs, _ = best_player.get_preds(s['state'])
-
-        best_player_version = best_player_version + 1
-        best_NN.model.set_weights(current_NN.model.get_weights())
-        best_NN.write(env.name, best_player_version)
-
-    else:
-        print('MEMORY SIZE: ' + str(len(memory.ltmemory)))
+    best_player_version = best_player_version + 1
+    best_NN.model.set_weights(current_NN.model.get_weights())
+    best_NN.write(env.name, best_player_version)
