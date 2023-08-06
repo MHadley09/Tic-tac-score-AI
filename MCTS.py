@@ -61,8 +61,7 @@ class MCTS():
 
 #             lg.logger_mcts.info('PLAYER TURN...%d', currentNode.state.playerTurn)
         
-            maxQU = -99999
-            simulationAction = None
+            maxQU = -99999999
             if currentNode == self.root and config.DIRICHLET:
                 epsilon = config.EPSILON
                 nu = np.random.dirichlet([config.ALPHA] * len(currentNode.edges))
@@ -71,9 +70,11 @@ class MCTS():
                 nu = [0] * len(currentNode.edges)
 
             Nb = 0
+
             for action, edge in currentNode.edges:
                 Nb = Nb + edge.stats['N']
 
+            simulationAction = None
             for idx, (action, edge) in enumerate(currentNode.edges):
 
                 U = self.cpuct * \
@@ -86,16 +87,18 @@ class MCTS():
 #                     , action, action % 7, edge.stats['N'], np.round(edge.stats['P'],6), np.round(nu[idx],6), ((1-epsilon) * edge.stats['P'] + epsilon * nu[idx] )
 #                     , np.round(edge.stats['W'],6), np.round(Q,6), np.round(U,6), np.round(Q+U,6))
 
-                if Q + U > maxQU:
+                if Q + U > maxQU or simulationAction == None:
                     maxQU = Q + U
                     simulationAction = action
                     simulationEdge = edge
 
 #             lg.logger_mcts.info('action with highest Q + U...%d', simulationAction)
-            if simulationAction != None:
-                newState, value, done = currentNode.state.takeAction(simulationAction) #the value of the newState from the POV of the new playerTurn
-                currentNode = simulationEdge.outNode
-                breadcrumbs.append(simulationEdge)
+            if simulationAction == None:
+                print(BreakOnPurpose)
+            newState, value, done = currentNode.state.takeAction(simulationAction) #the value of the newState from the POV of the new playerTurn
+            currentNode = simulationEdge.outNode
+            breadcrumbs.append(simulationEdge)
+
 
 #         lg.logger_mcts.info('DONE...%d', done)
 

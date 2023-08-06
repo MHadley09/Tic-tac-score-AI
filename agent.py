@@ -133,7 +133,8 @@ class Agent():
     def get_preds(self, state):
         #predict the leaf
         inputToModel = np.array([self.model.convertToModelInput(state)])
-        preds = self.model.predict(inputToModel)
+        nhwcModel = tf.transpose(inputToModel, [0, 1, 2, 3])
+        preds = self.model.predict(nhwcModel)
         value_array = preds[0]
         logits_array = preds[1]
         value = value_array[0]

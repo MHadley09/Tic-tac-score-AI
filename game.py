@@ -94,8 +94,8 @@ class GameState():
         # This is the value of the state for the current player
         # if there is only 1 move left calculate who wins
         if len(self.allowedActions) == 1:
-            scores = _getScore(self)
-            p1winning = 1 if score[0]-scores[1] > 0 else -1
+            scores = self._getScore()
+            p1winning = 1 if scores[0]-scores[1] > 0 else -1
             return p1winning*self.playerTurn
         return 0
 
@@ -142,7 +142,7 @@ class GameState():
         done = 0
 
         if newState.isEndGame:
-            value = newState.value[0]
+            value = newState.value
             done = 1
 
         return (newState, value, done) 

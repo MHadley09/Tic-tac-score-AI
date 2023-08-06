@@ -28,7 +28,6 @@ def alphazero_agent(env = None):
     ## Change this to the agent you would like
 #     MODEL_NAME = "AlphaZero Baseline.h5"
 #     MODEL_NAME = "AlphaZero R2.h5"    
-# TODO: Replace with our model
     MODEL_NAME = "AlphaZero R3.h5"
 
     

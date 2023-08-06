@@ -1,6 +1,6 @@
 #### SELF PLAY
 EPISODES = 30
-MCTS_SIMS = 100
+MCTS_SIMS = 1000
 MEMORY_SIZE = 6000
 TURNS_UNTIL_TAU0 = 10 # turn on which it starts playing deterministically
 CPUCT = 1
@@ -9,7 +9,7 @@ ALPHA = 0.8
 DIRICHLET = False # set to false when testing, true when training
 
 #### PRINTING GAME
-PRINT_GAME = True # set to false when training, true when testing
+PRINT_GAME = False # set to false when training, true when testing
 
 #### RETRAINING
 BATCH_SIZE = 256
