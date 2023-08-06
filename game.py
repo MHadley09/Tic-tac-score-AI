@@ -7,9 +7,9 @@ class Game:
         self.currentPlayer = 1
         self.grid_shape = (5,5)
         self.input_shape = (2,5,5)
-        self.b = np.array([0 for i in range(25)], dtype=np.int)
+        self.b = np.array([0 for i in range(25)], dtype=np.int32)
         self.gameState = GameState(self.b, 1)
-        self.actionSpace = np.array([0 for i in range(25)], dtype=np.int)
+        self.actionSpace = np.array([0 for i in range(25)], dtype=np.int32)
         self.pieces = {'1':'O', '0': '-', '-1':'X'}
         self.name = 'tic-tac-score'
         self.state_size = len(self.gameState.binary)
@@ -64,10 +64,10 @@ class GameState():
 
     def _binary(self):
 
-        currentplayer_position = np.zeros(len(self.board), dtype=np.int)
+        currentplayer_position = np.zeros(len(self.board), dtype=np.int32)
         currentplayer_position[self.board==self.playerTurn] = 1
 
-        other_position = np.zeros(len(self.board), dtype=np.int)
+        other_position = np.zeros(len(self.board), dtype=np.int32)
         other_position[self.board==-self.playerTurn] = 1
         
         position = np.concatenate((currentplayer_position,other_position))
@@ -75,10 +75,10 @@ class GameState():
         return (position)
 
     def _convertStateToId(self):
-        player1_position = np.zeros(len(self.board), dtype=np.int)
+        player1_position = np.zeros(len(self.board), dtype=np.int32)
         player1_position[self.board==1] = 1
 
-        other_position = np.zeros(len(self.board), dtype=np.int)
+        other_position = np.zeros(len(self.board), dtype=np.int32)
         other_position[self.board==-1] = 1
         
         position = np.concatenate((player1_position,other_position))
