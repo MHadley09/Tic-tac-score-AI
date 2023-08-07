@@ -6,7 +6,7 @@ from shutil import copyfile
 import random
 from importlib import reload
 
-from tensorflow.keras.utils import plot_model
+from keras.utils import plot_model
 import tensorflow as tf
 
 from game import Game, GameState
@@ -17,7 +17,7 @@ from funcs import playMatches, playMatchesBetweenVersions
 import loggers as lg
 
 from settings import run_folder, run_archive_folder
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 import pickle
 
 from loss import softmax_cross_entropy_with_logits
@@ -28,7 +28,7 @@ def alphazero_agent(env = None):
     ## Change this to the agent you would like
 #     MODEL_NAME = "AlphaZero Baseline.h5"
 #     MODEL_NAME = "AlphaZero R2.h5"    
-    MODEL_NAME = "AlphaZero R3.h5"
+    MODEL_NAME = "version0007.h5"
 
     
     game = Game(board = env.get_alphazero_state())

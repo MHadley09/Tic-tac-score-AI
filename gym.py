@@ -146,7 +146,7 @@ class gym:
         
     def get_tensor_state(self):
         ''' This returns the state in tensor form for deep learning methods '''
-        tensor = np.zeros((4, self.boardheight, self.boardsize))
+        tensor = np.zeros((3, self.boardheight, self.boardsize))
         for i in range(self.boardheight):
             for j in range(self.boardsize):
                 # first 2D grid is for turn
@@ -158,8 +158,6 @@ class gym:
                 elif self.state[i, j] == 2:
                     tensor[2, i, j] = 1
                 # next 2D grid is for B
-                elif self.state[i, j] == 3:
-                    tensor[3, i, j] = 1
         return tensor
     
     def get_alphazero_state(self):
@@ -167,12 +165,10 @@ class gym:
         newstate = self.state.flatten()
         for i in range(len(newstate)):
             if newstate[i]==1:
-                newstate[i] = [1,-1][self.turn-1]
+                newstate[i] = 1
             elif newstate[i]==2:
-                newstate[i] = [-1,1][self.turn-1]
-            elif newstate[i]==3:
-                newstate[i]=100
-            
+                newstate[i] = -1
+
         return newstate
         
     def get_state(self):

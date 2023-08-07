@@ -87,7 +87,6 @@ class Agent():
 
 
     def act(self, state, tau):
-        
         # this is only when you do not want to use MCTS at all, but just using the policy network to decide
         if config.MCTS_SIMS == 0:
             pi = self.get_preds(state)[1]
@@ -134,6 +133,7 @@ class Agent():
         #predict the leaf
         inputToModel = np.array([self.model.convertToModelInput(state)])
         preds = self.model.predict(inputToModel)
+
         value_array = preds[0]
         logits_array = preds[1]
         value = value_array[0]
@@ -164,7 +164,6 @@ class Agent():
 #             lg.logger_mcts.info('PREDICTED VALUE FOR %d: %f', leaf.state.playerTurn, value)
 
             probs = probs[allowedActions]
-
             for idx, action in enumerate(allowedActions):
                 newState, _, _ = leaf.state.takeAction(action)
                 if newState.id not in self.mcts.tree:
@@ -205,8 +204,8 @@ class Agent():
             action_idx = np.random.multinomial(1, pi)
             action = np.where(action_idx==1)[0][0]
 
-        value = values[action]
 
+        value = values[action]
         return action, value
 
     def replay(self, ltmemory):

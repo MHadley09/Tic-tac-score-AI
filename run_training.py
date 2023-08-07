@@ -6,7 +6,7 @@ import random
 from importlib import reload
 
 
-from tensorflow.keras.utils import plot_model
+#from tensorflow.keras.utils import plot_model
 import tensorflow as tf
 
 from game import Game, GameState
@@ -36,8 +36,8 @@ else:
 ######## LOAD MODEL IF NECESSARY ########
 
 # create an untrained neural network objects from the config file
-current_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.grid_shape + (env.input_shape[0],) ,   env.action_size, config.HIDDEN_CNN_LAYERS)
-best_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.grid_shape + (env.input_shape[0],) ,   env.action_size, config.HIDDEN_CNN_LAYERS)
+current_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, (env.input_shape[0],)  + env.grid_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
+best_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, (env.input_shape[0],) + env.grid_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
 
 #If loading an existing neural netwrok, set the weights from that model
 if initialize.INITIAL_MODEL_VERSION != None:
@@ -53,7 +53,7 @@ else:
 
 #copy the config file to the run folder
 copyfile('./config.py', run_folder + 'config.py')
-plot_model(current_NN.model, to_file=run_folder + 'models/model.png', show_shapes = True)
+#plot_model(current_NN.model, to_file=run_folder + 'models/model.png', show_shapes = True)
 
 print('\n')
 
@@ -78,7 +78,7 @@ while 1:
     _, memory, _, _ = playMatches(best_player, best_player, config.EPISODES, turns_until_tau0 = config.TURNS_UNTIL_TAU0, memory = memory)
     print('\n')
     
-    if True == True: #len(memory.ltmemory) >= config.MEMORY_SIZE:
+    if len(memory.ltmemory) >= config.MEMORY_SIZE:
 
     ######## RETRAINING ########
         print('RETRAINING...')

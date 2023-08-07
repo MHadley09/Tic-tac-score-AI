@@ -31,14 +31,28 @@ class Game:
         identities = [(state,actionValues)]
 
                                    
-        currentBoard = state.board.reshape(self.grid_shape)
-        currentAV = actionValues.reshape(self.grid_shape)
+        currentBoard = state.board
+        currentAV = actionValues
+        
+        #exploit symmetry for faster learning
+        currentBoard = np.array([
+			currentBoard[4], currentBoard[3], currentBoard[2], currentBoard[1], currentBoard[0],
+			currentBoard[9], currentBoard[8], currentBoard[7], currentBoard[6], currentBoard[5],
+			currentBoard[14], currentBoard[13], currentBoard[12], currentBoard[11], currentBoard[10],
+			currentBoard[19], currentBoard[18], currentBoard[17], currentBoard[16], currentBoard[15],
+			currentBoard[24], currentBoard[23], currentBoard[22], currentBoard[21], currentBoard[20]
+			])
 
-        #learn faster by accounting for symmetry
+        currentAV =  np.array([
+			currentAV[4], currentAV[3], currentAV[2], currentAV[1], currentAV[0],
+			currentAV[9], currentAV[8], currentAV[7], currentAV[6], currentAV[5],
+			currentAV[14], currentAV[13], currentAV[12], currentAV[11], currentAV[10],
+			currentAV[19], currentAV[18], currentAV[17], currentAV[16], currentAV[15],
+			currentAV[24], currentAV[23], currentAV[22], currentAV[21], currentAV[20]
+			])
 
-        identities.append((GameState(np.flip(currentBoard,0).flatten(), state.playerTurn), np.flip(currentAV,0).flatten()))
-        identities.append((GameState(np.flip(currentBoard,1).flatten(), state.playerTurn), np.flip(currentAV,1).flatten()))
-        identities.append((GameState(np.flip(currentBoard,(0,1)).flatten(), state.playerTurn), np.flip(currentAV,(0,1)).flatten()))
+
+        identities.append((GameState(currentBoard, state.playerTurn), currentAV))
 
         return identities
 
@@ -60,7 +74,8 @@ class GameState():
 
     def _allowedActions(self):
         # only those empty cells can be filled
-        return np.where(self.board == 0)[0]
+        allowed = np.where(self.board == 0)[0]
+        return allowed
 
     def _binary(self):
 
@@ -96,8 +111,8 @@ class GameState():
         if len(self.allowedActions) == 1:
             scores = self._getBoardScore()
             p1winning = 1 if scores[0]-scores[1] > 0 else -1
-            return (p1winning*self.playerTurn, p1winning*self.playerTurn, p1winning*self.playerTurn)
-        return (0,0)
+            return (p1winning*self.playerTurn, p1winning*self.playerTurn, 1)
+        return (0,0, 0)
 
     def _getBoardScore(self):
         ''' This returns the value of the current board position'''
@@ -116,7 +131,8 @@ class GameState():
         return (p1score, p2score)
 
     def _getScore(self):
-        return self._getValue()
+        temp = self._getValue()
+        return (temp[1], temp[2])
         
     def rewardFromSpot(self, calcBoard, matchSymbol, h, w):
         scores = 0
@@ -138,7 +154,6 @@ class GameState():
     def takeAction(self, action):
         newBoard = np.array(self.board)
         newBoard[action]=self.playerTurn
-        
         newState = GameState(newBoard, -self.playerTurn)
 
         value = 0

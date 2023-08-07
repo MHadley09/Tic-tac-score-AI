@@ -42,7 +42,7 @@ def ChooseSecondPlayer():
 def ChooseMove(moves):
     ''' Convert player moves in the form of grid cell (e.g. A4) to an index number '''
 
-    movedict = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7}
+    movedict = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5}
     index = input('Key in cell number to play (i.e. A2) :\n')
     
     while True:
@@ -67,7 +67,6 @@ def ChooseNumGames():
 
     
 def main():
-    '''This runs the BTTT tournament'''
     # choose the hyperparameters
     firstplayer = ChooseFirstPlayer()
     secondplayer = ChooseSecondPlayer()
@@ -121,7 +120,6 @@ def main():
                     action = random_agent(env)
 
             env.step(action)
-
             # check if anyone won the game
             if env.done:
                 env.printboard()
