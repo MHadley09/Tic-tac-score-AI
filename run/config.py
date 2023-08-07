@@ -15,7 +15,7 @@ PRINT_GAME = False # set to false when training, true when testing
 BATCH_SIZE = 256
 EPOCHS = 1
 REG_CONST = 0.0001
-LEARNING_RATE = 0.1
+LEARNING_RATE = 1.0
 MOMENTUM = 0.9
 TRAINING_LOOPS = 10
 
@@ -27,3 +27,4 @@ HIDDEN_CNN_LAYERS = [
 	 , {'filters':75, 'kernel_size': (4,4)}
 	 , {'filters':75, 'kernel_size': (4,4)}
 	]
+

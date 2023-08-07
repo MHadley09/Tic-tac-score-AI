@@ -36,8 +36,8 @@ else:
 ######## LOAD MODEL IF NECESSARY ########
 
 # create an untrained neural network objects from the config file
-current_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, (env.input_shape[0],) + env.grid_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
-best_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, (env.input_shape[0],) +  env.grid_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
+current_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.grid_shape + (env.input_shape[0],) ,   env.action_size, config.HIDDEN_CNN_LAYERS)
+best_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.grid_shape + (env.input_shape[0],) ,   env.action_size, config.HIDDEN_CNN_LAYERS)
 
 #If loading an existing neural netwrok, set the weights from that model
 if initialize.INITIAL_MODEL_VERSION != None:
@@ -78,20 +78,26 @@ while 1:
     _, memory, _, _ = playMatches(best_player, best_player, config.EPISODES, turns_until_tau0 = config.TURNS_UNTIL_TAU0, memory = memory)
     print('\n')
     
+    if True == True: #len(memory.ltmemory) >= config.MEMORY_SIZE:
+
     ######## RETRAINING ########
-    print('RETRAINING...')
-    current_player.replay(memory.ltmemory)
-    print('')
+        print('RETRAINING...')
+        current_player.replay(memory.ltmemory)
+        print('')
 
-    if iteration % 5 == 0:
         pickle.dump( memory, open( run_folder + "memory/memory" + str(iteration).zfill(4) + ".p", "wb" ) )
-    
-    memory_samp = random.sample(memory.ltmemory, min(1000, len(memory.ltmemory)))
-    
-    for s in memory_samp:
-        current_value, current_probs, _ = current_player.get_preds(s['state'])
-        best_value, best_probs, _ = best_player.get_preds(s['state'])
+        
+        print("sampling")
+        memory_samp = random.sample(memory.ltmemory, min(1000, len(memory.ltmemory)))
+        
+        for s in memory_samp:
+            current_value, current_probs, _ = current_player.get_preds(s['state'])
+            best_value, best_probs, _ = best_player.get_preds(s['state'])
 
-    best_player_version = best_player_version + 1
-    best_NN.model.set_weights(current_NN.model.get_weights())
-    best_NN.write(env.name, best_player_version)
+        print("writing")
+        best_player_version = best_player_version + 1
+        best_NN.model.set_weights(current_NN.model.get_weights())
+        best_NN.write(env.name, best_player_version)
+
+    else:
+        print('MEMORY SIZE: ' + str(len(memory.ltmemory)))

@@ -133,8 +133,7 @@ class Agent():
     def get_preds(self, state):
         #predict the leaf
         inputToModel = np.array([self.model.convertToModelInput(state)])
-        nhwcModel = tf.transpose(inputToModel, [0, 1, 2, 3])
-        preds = self.model.predict(nhwcModel)
+        preds = self.model.predict(inputToModel)
         value_array = preds[0]
         logits_array = preds[1]
         value = value_array[0]
@@ -145,12 +144,13 @@ class Agent():
 
         mask = np.ones(logits.shape,dtype=bool)
         mask[allowedActions] = False
+        #logits[np.isnan(logits)] = 1
+        #value_array[np.isnan(value_array)] = 1
         logits[mask] = -100
-
         #SOFTMAX
         odds = np.exp(logits)
+        #print(np.sum(odds))
         probs = odds / np.sum(odds) ###put this just before the for?
-
         return ((value, probs, allowedActions))
 
 
@@ -243,6 +243,7 @@ class Agent():
 
     def predict(self, inputToModel):
         preds = self.model.predict(inputToModel)
+        #print(preds)
         return preds
 
     def buildMCTS(self, state):

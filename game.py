@@ -6,7 +6,7 @@ class Game:
     def __init__(self, board = []):        
         self.currentPlayer = 1
         self.grid_shape = (5,5)
-        self.input_shape = (2,5,5)
+        self.input_shape = (2, 5, 5)
         self.b = np.array([0 for i in range(25)], dtype=np.int32)
         self.gameState = GameState(self.b, 1)
         self.actionSpace = np.array([0 for i in range(25)], dtype=np.int32)
@@ -94,12 +94,12 @@ class GameState():
         # This is the value of the state for the current player
         # if there is only 1 move left calculate who wins
         if len(self.allowedActions) == 1:
-            scores = self._getScore()
+            scores = self._getBoardScore()
             p1winning = 1 if scores[0]-scores[1] > 0 else -1
-            return p1winning*self.playerTurn
-        return 0
+            return (p1winning*self.playerTurn, p1winning*self.playerTurn, p1winning*self.playerTurn)
+        return (0,0)
 
-    def _getScore(self):
+    def _getBoardScore(self):
         ''' This returns the value of the current board position'''
         p1score = 0
         p2score = 0
@@ -115,6 +115,9 @@ class GameState():
                     p2score += scores
         return (p1score, p2score)
 
+    def _getScore(self):
+        return self._getValue()
+        
     def rewardFromSpot(self, calcBoard, matchSymbol, h, w):
         scores = 0
         
@@ -142,7 +145,7 @@ class GameState():
         done = 0
 
         if newState.isEndGame:
-            value = newState.value
+            value = newState.value[0]
             done = 1
 
         return (newState, value, done) 
