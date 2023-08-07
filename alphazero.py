@@ -30,7 +30,7 @@ def alphazero_agent(env = None):
 #     MODEL_NAME = "AlphaZero R2.h5"    
     MODEL_NAME = "version0007.h5"
 
-    
+
     game = Game(board = env.get_alphazero_state())
 
     ######## LOAD MODEL ########
