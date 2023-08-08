@@ -28,7 +28,7 @@ def alphazero_agent(env = None):
     ## Change this to the agent you would like
 #     MODEL_NAME = "AlphaZero Baseline.h5"
 #     MODEL_NAME = "AlphaZero R2.h5"    
-    MODEL_NAME = "version0007.h5"
+    MODEL_NAME = "version0026.h5"
 
 
     game = Game(board = env.get_alphazero_state())
