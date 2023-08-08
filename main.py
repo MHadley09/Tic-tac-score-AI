@@ -5,6 +5,7 @@ import time
 from copy import deepcopy
 from gym import *
 from alphazero import *
+from alphazero_worse import *
 from own_agent import *
 
 def ChooseFirstPlayer():
@@ -15,8 +16,8 @@ def ChooseFirstPlayer():
     3: Monte Carlo Tree Search (10000 iterations)\n\
     4: Minimax Agent with Expert Heuristic to Depth 2\n\
     5: AlphaZero Agent\n\
-    6: Random Agent\n\
-    7: Own Agent (Default: Random)\n')
+    6: Older AlphaZero Agent for Bench\n\
+    7:  Random\n')
     while True:
         if player in '1234567' and len(player) == 1:
             return int(player)
@@ -31,8 +32,8 @@ def ChooseSecondPlayer():
     3: Monte Carlo Tree Search (10000 iterations)\n\
     4: Minimax Agent with Expert Heuristic to Depth 2\n\
     5: AlphaZero Agent\n\
-    6: Random Agent\n\
-    7: Own Agent (Default: Random)\n')
+    6: Older AlphaZero Agent for Bench\n\
+    7:  Random\n')
     while True:
         if player in '1234567' and len(player) == 1:
             return int(player)
@@ -74,10 +75,28 @@ def main():
 
     p1wins, p2wins, draw = 0, 0, 0
 
+    firstPlayerAgent = None
+    secondPlayerAgent = None
+
+    initialstate = np.zeros((BOARDSIZE, BOARDHEIGHT))
+
+    env = gym(state = initialstate)
+
+    if firstplayer == 5:
+        firstPlayerAgent = alphazero_agent("version0160.h5", env)
+    elif firstplayer == 6:
+        firstPlayerAgent = alphazero_agent("version0031.h5", env)
+
+    if secondplayer == 5:
+        secondPlayerAgent = alphazero_agent("version0160.h5", env)
+    elif secondplayer == 6:
+        secondPlayerAgent = alphazero_agent("version0031.h5", env)
+
+
     for i in range(num_games):
         turn = 1   
-        initialstate = np.zeros((BOARDSIZE, BOARDHEIGHT))
         
+        initialstate = np.zeros((BOARDSIZE, BOARDHEIGHT))
         env = gym(state = initialstate)
                 
         while(True):
@@ -95,10 +114,8 @@ def main():
                     action = mcts_agent(env, num_iter = 10000)
                 elif firstplayer == 4:
                     action = minimax_agent(env, depth = 2)
-                elif firstplayer == 5:
-                    action = alphazero_agent(env)
-                elif firstplayer == 6:
-                    action = own_agent(env)
+                elif firstplayer in [5, 6]:
+                    action = alphazero_agent_act(firstPlayerAgent, env)
                 else:
                     action = random_agent(env)
 
@@ -112,10 +129,8 @@ def main():
                     action = mcts_agent(env, num_iter = 10000)
                 elif secondplayer == 4:
                     action = minimax_agent(env, depth = 2)
-                elif secondplayer == 5:
-                    action = alphazero_agent(env)
-                elif secondplayer == 6:
-                    action = own_agent(env)
+                elif secondplayer in [5, 6]:
+                    action = alphazero_agent_act(secondPlayerAgent, env)
                 else:
                     action = random_agent(env)
 

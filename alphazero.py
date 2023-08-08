@@ -22,20 +22,11 @@ import pickle
 
 from loss import softmax_cross_entropy_with_logits
 
-def alphazero_agent(env = None):
-    # load the best agent
-    
-    ## Change this to the agent you would like
-#     MODEL_NAME = "AlphaZero Baseline.h5"
-#     MODEL_NAME = "AlphaZero R2.h5"    
-    MODEL_NAME = "version0026.h5"
-
-
+def alphazero_agent(model = "version0160.h5", env = None):
+    MODEL_NAME = model
     game = Game(board = env.get_alphazero_state())
-
     ######## LOAD MODEL ########
-
-    # create an untrained neural network objects from the config file
+    # load the best agent
     best_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, (game.input_shape[0],) +  game.grid_shape, game.action_size, config.HIDDEN_CNN_LAYERS)
 
     # set weights to best model
@@ -46,7 +37,12 @@ def alphazero_agent(env = None):
 
     current_player = Agent('current_player', game.state_size, game.action_size, config.MCTS_SIMS, config.CPUCT, best_NN)
 
-    #### Run the MCTS algorithm and return an action
-    action, pi, MCTS_value, NN_value = current_player.act(game.gameState, 0)
+    return current_player
+
+def alphazero_agent_act(agent = None, env = None):
+    
+    game = Game(board = env.get_alphazero_state())
+
+    action, pi, MCTS_value, NN_value = agent.act(game.gameState, 0)
 
     return action
