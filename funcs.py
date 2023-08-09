@@ -113,9 +113,10 @@ def playMatches(player1, player2, EPISODES, turns_until_tau0, goes_first = 0, me
                 env.gameState.printgame()
 
             if done == 1: 
+                winner = state.winner
+
                 if memory != None:
                     #### If the game is finished, assign the values correctly to the game moves
-                    winner = state.winner
                     for move in memory.stmemory:
                         if state.winner == 0:
                             move['value'] = 0
@@ -128,7 +129,7 @@ def playMatches(player1, player2, EPISODES, turns_until_tau0, goes_first = 0, me
 #                     print('Committing to memory')
 #                     print('LT MEMORY SIZE: ' + str(len(memory.ltmemory)))
 #                     print('ST MEMORY SIZE: ' + str(len(memory.stmemory)))
-             
+
                 if winner in [-1, 1]:
 #                     logger.info('%s WINS!', players[state.playerTurn]['name'])
                     scores[players[winner]['name']] = scores[players[winner]['name']] + 1
