@@ -94,7 +94,6 @@ while 1:
             current_value, current_probs, _ = current_player.get_preds(s['state'])
             best_value, best_probs, _ = best_player.get_preds(s['state'])
 
-        print("writing")
         print('TOURNAMENT...')
         scores, _, points, sp_scores = playMatches(best_player, current_player, config.EVAL_EPISODES, turns_until_tau0 = 0, memory = None)
         print('\nSCORES')
@@ -106,6 +105,7 @@ while 1:
         print('\n\n')
 
         if scores['current_player'] > scores['best_player'] * config.SCORING_THRESHOLD:
+            print("writing new best model")
             best_player_version = best_player_version + 1
             best_NN.model.set_weights(current_NN.model.get_weights())
             best_NN.write(env.name, best_player_version)
