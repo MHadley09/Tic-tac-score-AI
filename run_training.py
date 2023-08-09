@@ -95,9 +95,20 @@ while 1:
             best_value, best_probs, _ = best_player.get_preds(s['state'])
 
         print("writing")
-        best_player_version = best_player_version + 1
-        best_NN.model.set_weights(current_NN.model.get_weights())
-        best_NN.write(env.name, best_player_version)
+        print('TOURNAMENT...')
+        scores, _, points, sp_scores = playMatches(best_player, current_player, config.EVAL_EPISODES, turns_until_tau0 = 0, memory = None)
+        print('\nSCORES')
+        print(scores)
+        print('\nSTARTING PLAYER / NON-STARTING PLAYER SCORES')
+        print(sp_scores)
+        #print(points)
+
+        print('\n\n')
+
+        if scores['current_player'] > scores['best_player'] * config.SCORING_THRESHOLD:
+            best_player_version = best_player_version + 1
+            best_NN.model.set_weights(current_NN.model.get_weights())
+            best_NN.write(env.name, best_player_version)
 
     else:
         print('MEMORY SIZE: ' + str(len(memory.ltmemory)))
