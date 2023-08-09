@@ -93,7 +93,8 @@ class gym:
                 elif matchSymbol == 2:
                     scores = self.scoresFromSpot(board, matchSymbol, h, w)
                     p2score += scores
-
+        if p1score == p2score:
+            return 0
         return 1 if p1score > p2score else -1
 
     def scoresFromSpot(self, board, matchSymbol, h, w):

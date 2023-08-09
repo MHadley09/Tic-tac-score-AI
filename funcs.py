@@ -115,34 +115,27 @@ def playMatches(player1, player2, EPISODES, turns_until_tau0, goes_first = 0, me
             if done == 1: 
                 if memory != None:
                     #### If the game is finished, assign the values correctly to the game moves
+                    winner = state.winner
                     for move in memory.stmemory:
-                        if move['playerTurn'] == state.playerTurn:
-                            move['value'] = value
+                        if state.winner == 0:
+                            move['value'] = 0
+                        elif move['playerTurn'] == state.winner:
+                            move['value'] = 1
                         else:
-                            move['value'] = -value
+                            move['value'] = -1
                          
                     memory.commit_ltmemory()
 #                     print('Committing to memory')
 #                     print('LT MEMORY SIZE: ' + str(len(memory.ltmemory)))
 #                     print('ST MEMORY SIZE: ' + str(len(memory.stmemory)))
              
-                if value == 1:
+                if winner in [-1, 1]:
 #                     logger.info('%s WINS!', players[state.playerTurn]['name'])
-                    scores[players[state.playerTurn]['name']] = scores[players[state.playerTurn]['name']] + 1
-                    if state.playerTurn == 1: 
+                    scores[players[winner]['name']] = scores[players[winner]['name']] + 1
+                    if winner == 1: 
                         sp_scores['sp'] = sp_scores['sp'] + 1
                     else:
                         sp_scores['nsp'] = sp_scores['nsp'] + 1
-
-                elif value == -1:
-#                     logger.info('%s WINS!', players[-state.playerTurn]['name'])
-                    scores[players[-state.playerTurn]['name']] = scores[players[-state.playerTurn]['name']] + 1
-               
-                    if state.playerTurn == 1: 
-                        sp_scores['nsp'] = sp_scores['nsp'] + 1
-                    else:
-                        sp_scores['sp'] = sp_scores['sp'] + 1
-
                 else:
 #                     logger.info('DRAW...')
                     scores['drawn'] = scores['drawn'] + 1

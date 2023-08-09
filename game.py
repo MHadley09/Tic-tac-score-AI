@@ -71,6 +71,7 @@ class GameState():
         self.isEndGame = self._checkForEndGame()
         self.value = self._getValue()
         self.score = self._getScore()
+        self.winner = self._getWinner()
 
     def _allowedActions(self):
         # only those empty cells can be filled
@@ -105,12 +106,26 @@ class GameState():
     def _checkForEndGame(self):
         return 1 if len(self.allowedActions) == 1 else 0
 
+    def _getWinner(self):
+        # if there is only 1 move left calculate who wins
+        if len(self.allowedActions) == 1:
+            scores = self._getBoardScore()
+            if scores[0] == scores[1]:
+                return 0
+            return 1 if scores[0] > scores [1] else -1
+        return 0
+
     def _getValue(self):
         # This is the value of the state for the current player
         # if there is only 1 move left calculate who wins
         if len(self.allowedActions) == 1:
             scores = self._getBoardScore()
+
+            if scores[0] == scores[1]:
+                return (0, 0, 0)
+
             p1winning = 1 if scores[0]-scores[1] > 0 else -1
+
             return (p1winning*self.playerTurn, p1winning*self.playerTurn, 1)
         return (0,0, 0)
 
