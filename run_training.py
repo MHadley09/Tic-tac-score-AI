@@ -78,6 +78,8 @@ while 1:
     _, memory, _, _ = playMatches(best_player, best_player, config.EPISODES, turns_until_tau0 = config.TURNS_UNTIL_TAU0, memory = memory)
     print('\n')
     
+    memory.clear_stmemory()
+
     if len(memory.ltmemory) >= config.MEMORY_SIZE:
 
     ######## RETRAINING ########
@@ -87,13 +89,6 @@ while 1:
 
         pickle.dump( memory, open( run_folder + "memory/memory" + str(iteration).zfill(4) + ".p", "wb" ) )
         
-        print("sampling")
-        memory_samp = random.sample(memory.ltmemory, min(1000, len(memory.ltmemory)))
-        
-        for s in memory_samp:
-            current_value, current_probs, _ = current_player.get_preds(s['state'])
-            best_value, best_probs, _ = best_player.get_preds(s['state'])
-
         print('TOURNAMENT...')
         scores, _, points, sp_scores = playMatches(best_player, current_player, config.EVAL_EPISODES, turns_until_tau0 = 0, memory = None)
         print('\nSCORES')

@@ -140,8 +140,8 @@ class GameState():
                 if matchSymbol == 1:
                     scores = self.rewardFromSpot(calcBoard, 1, h, w)
                     p1score += scores
-                elif matchSymbol == 2:
-                    scores = self.rewardFromSpot(calcBoard, 2, h, w)
+                elif matchSymbol == -1:
+                    scores = self.rewardFromSpot(calcBoard, -1, h, w)
                     p2score += scores
         return (p1score, p2score)
 

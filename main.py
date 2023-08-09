@@ -5,7 +5,6 @@ import time
 from copy import deepcopy
 from gym import *
 from alphazero import *
-from alphazero_worse import *
 from own_agent import *
 
 def ChooseFirstPlayer():

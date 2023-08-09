@@ -114,7 +114,6 @@ def playMatches(player1, player2, EPISODES, turns_until_tau0, goes_first = 0, me
 
             if done == 1: 
                 winner = state.winner
-
                 if memory != None:
                     #### If the game is finished, assign the values correctly to the game moves
                     for move in memory.stmemory:
