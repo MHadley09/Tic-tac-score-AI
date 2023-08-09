@@ -1,6 +1,9 @@
 ## Instructions
+
+When using python 3.6.8,, before attempting to run any files run `python -m pip install -r requirements.txt` to ensure the correct versions of tensorflow and other dependencies are install.
+
 <b>Dependencies required:</b>
-- python 3.0
+- python 3.6.8
 - tensorflow
 - numpy
 - copy
@@ -13,6 +16,7 @@ https://adsp.ai/blog/how-to-build-your-own-alphazero-ai-using-python-and-keras/
 
 <b>File Descriptions:</b>
 - `main.py`: runs the Tic-tac-toe Scores tournament.
+- `run_training.py`: runs the model training for the convolutional neural network and places them in the models folder.  Configurations can be set at config.py. initialize.py can be used to resume from a given pickle file and model.
 - `gym.py`: is the code for the Tic-tac-toe Scores environment, plus the in-built Minimax, MCTS and Random agents.
 - `time.py`: runs the code to determine the runtime of each agent.
 - `alphazero.py`: contains the code for the AlphaZero agent. Change the `MODEL_NAME` to the .h5 file which contains the trained model's weights.
@@ -29,7 +33,7 @@ https://adsp.ai/blog/how-to-build-your-own-alphazero-ai-using-python-and-keras/
 <b>Runtime Analysis Instructions:</b>
 - To do runtime analysis for each agent, type `python time.py` into a command line interface
 
-<b>AlphaZero training instructions:</b>
+<b>Alternative AlphaZero training instructions:</b>
 - To train AlphaZero, open `alphazero.ipynb` and run the cells
 - Hyperparameters can be edited in `config.py`. Important: Set `DIRICHLET` variable to *True* when training, and *False* when testing. This controls the amount of exploration in the first `TURNS_UNTIL_TAU0` steps through adding of dirichlet noise.
 - Initial configurations can be edited in `initialize.py`
