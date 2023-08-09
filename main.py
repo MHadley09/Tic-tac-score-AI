@@ -83,14 +83,14 @@ def main():
     env = gym(state = initialstate)
 
     if firstplayer == 5:
-        firstPlayerAgent = alphazero_agent("version0160.h5", env)
+        firstPlayerAgent = alphazero_agent("best.h5", env)
     elif firstplayer == 6:
-        firstPlayerAgent = alphazero_agent("version0031.h5", env)
+        firstPlayerAgent = alphazero_agent("primitive.h5", env)
 
     if secondplayer == 5:
-        secondPlayerAgent = alphazero_agent("version0160.h5", env)
+        secondPlayerAgent = alphazero_agent("best.h5", env)
     elif secondplayer == 6:
-        secondPlayerAgent = alphazero_agent("version0031.h5", env)
+        secondPlayerAgent = alphazero_agent("primitive.h5", env)
 
 
     for i in range(num_games):

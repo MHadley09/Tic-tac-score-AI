@@ -22,7 +22,7 @@ import pickle
 
 from loss import softmax_cross_entropy_with_logits
 
-def alphazero_agent(model = "version0160.h5", env = None):
+def alphazero_agent(model = "best.h5", env = None):
     MODEL_NAME = model
     game = Game(board = env.get_alphazero_state())
     ######## LOAD MODEL ########
