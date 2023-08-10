@@ -1,6 +1,8 @@
 ## Instructions
 
-When using python 3.6.8,, before attempting to run any files run `python -m pip install -r requirements.txt` to ensure the correct versions of tensorflow and other dependencies are install.
+To run one must use python 3.6.8, before attempting to run any files run `python -m pip install -r requirements.txt` to ensure the correct versions of tensorflow and other dependencies are install.
+
+If python 3.6.8 is not installed, one can set the python version to python 3.6.8 by installing pyevn to configure project specific python versions.  Once pyenv is installed, run `pyenv install 3.6.8`. Upon completion navigate to the folder for this project and run `pyenv local 3.6.8` or run `pyenv global 3.6.8`.  You will then be able pip install the approriate packages and versions for running this project.
 
 <b>Dependencies required:</b>
 - python 3.6.8
